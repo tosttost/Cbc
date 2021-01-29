@@ -169,7 +169,11 @@ if test "$enable_cbc_parallel" != no; then
   # Define the preprocessor macro
   case "$CXX" in
   *cl) # Windows / cl: look for pthreadsw32 lib
-    AC_COIN_CHK_LIB(pthreadsw32,[CbcLib],[pthreadVCE2.lib],[],[],[pthread_create])
+    AC_COIN_CHK_LIBHDR(pthreadsw32,[CbcLib],[pthreadVCE2.lib],[],[],
+      [pthread_t thread; pthread_create(&thread, NULL, NULL, NULL);],
+      [#include <pthread.h>
+       #include <stdlib.h>
+      ])
     if test "$coin_has_pthreadsw32" = yes ; then
       enable_cbc_parallel=yes
     elif test "$enable_cbc_parallel" = yes ; then
