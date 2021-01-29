@@ -104,7 +104,15 @@ AC_COIN_CHK_PKG(OsiMsk,[CbcGeneric OsiCbcLib],[osi-mosek])
 AC_COIN_CHK_PKG(OsiSpx,[CbcGeneric OsiCbcLib],[osi-soplex])
 #AC_COIN_CHK_PKG(OsiXpr,,[osi-xpress])
 
-AC_COIN_CHK_LIB(Cplex,[CbcLib],[-lcplex -lpthread -lm -ldl],[],[],[CPXgetstat])
+AC_COIN_CHK_LIBHDR(Cplex,[CbcLib],[-lcplex -lpthread -lm -ldl],[],[],
+  [int err;
+   #if CPX_VERSION >= 800
+     CPXopenCPLEX(&err);
+   #else
+     CPXopenCPLEXdevelop(&err);
+   #endif],
+  [#include "cplex.h"])
+
 AC_COIN_CHK_PKG(Glpk,[CbcSolverLib],[coinglpk])
 
 #############################################################################
